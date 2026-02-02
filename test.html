@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <title>Phase Theory</title>
+  <meta name="description" content="Phase Theory — phase as the sole primitive." />
+
+  <!-- Optional: nicer serif if available on the system -->
+  <style>
+    :root{
+      --bg:#070707;           /* deep matte black */
+      --bg2:#0b0b0c;          /* near-black charcoal */
+      --ink:#f2f0ea;          /* bone-white */
+      --muted:rgba(242,240,234,.72);
+      --faint:rgba(242,240,234,.52);
+      --foil:#c8b57a;         /* restrained brass */
+      --foil2:#e7dfc2;        /* pale platinum highlight */
+      --line:rgba(242,240,234,.12);
+      --shadow:0 30px 90px rgba(0,0,0,.65);
+      --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Garamond, Georgia, serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --radius: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 560px at 50% 32%, rgba(200,181,122,.10), transparent 60%),
+        radial-gradient(780px 520px at 50% 80%, rgba(242,240,234,.06), transparent 62%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      font-family: var(--serif);
+      letter-spacing: .01em;
+    }
+
+    /* print-like grainless matte (no visible noise), subtle vignette */
+    .vignette{
+      position:fixed; inset:0;
+      pointer-events:none;
+      background: radial-gradient(1100px 800px at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%);
+      opacity:.9;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding: 56px 18px;
+    }
+
+    .card{
+      width:min(980px, 100%);
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.28);
+      box-shadow: var(--shadow);
+      padding: 44px 34px 34px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* subtle “foil emboss” sheen */
+    .card::before{
+      content:"";
+      position:absolute; inset:-60%;
+      background: conic-gradient(from 210deg,
+        transparent 0deg,
+        rgba(231,223,194,.12) 35deg,
+        rgba(200,181,122,.18) 60deg,
+        transparent 120deg,
+        rgba(200,181,122,.10) 180deg,
+        transparent 360deg
+      );
+      opacity:.35;
+      transform: rotate(8deg);
+      pointer-events:none;
+      mask-image: radial-gradient(520px 520px at 50% 44%, black 38%, transparent 72%);
+    }
+
+    header{
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+
+    .title{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .subtitle{
+      margin: 10px auto 0;
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      font-family: var(--serif);
+    }
+
+    .mark{
+      margin: 26px auto 18px;
+      width: 180px;
+      height: 220px;
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+
+    /* caret + Phi like the book cover */
+    .caret{
+      position:absolute;
+      top: 16px;
+      font-family: var(--mono);
+      font-size: 18px;
+      color: var(--foil2);
+      letter-spacing: .08em;
+      transform: translateY(-2px);
+      text-shadow: 0 0 22px rgba(200,181,122,.18);
+    }
+
+    .phi{
+      font-size: 132px;
+      line-height: 1;
+      color: var(--foil);
+      font-weight: 500;
+      text-shadow: 0 0 26px rgba(200,181,122,.16);
+    }
+
+    /* thin-line drafting ring around the mark */
+    .mark::before{
+      content:"";
+      position:absolute;
+      inset: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(200,181,122,.34);
+      box-shadow: inset 0 0 0 1px rgba(242,240,234,.06);
+      opacity:.55;
+    }
+    .mark::after{
+      content:"";
+      position:absolute;
+      inset: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(242,240,234,.10);
+      opacity:.5;
+    }
+
+    .divider{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(242,240,234,.18), transparent);
+      margin: 24px 0;
+      opacity:.9;
+      position:relative;
+      z-index:1;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      position:relative;
+      z-index:1;
+    }
+
+    .block{
+      border: 1px solid rgba(242,240,234,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+    }
+
+    .label{
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(242,240,234,.78);
+      margin:0 0 10px;
+    }
+
+    .copy{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 14px;
+    }
+
+    a.btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(200,181,122,.40);
+      background: rgba(200,181,122,.10);
+      color: var(--ink);
+      text-decoration:none;
+      letter-spacing:.06em;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      font-family: var(--serif);
+    }
+    a.btn:hover{
+      transform: translateY(-1px);
+      background: rgba(200,181,122,.16);
+      border-color: rgba(231,223,194,.55);
+    }
+
+    a.btn.secondary{
+      border-color: rgba(242,240,234,.14);
+      background: rgba(242,240,234,.06);
+      color: rgba(242,240,234,.90);
+    }
+    a.btn.secondary:hover{
+      background: rgba(242,240,234,.09);
+      border-color: rgba(242,240,234,.22);
+    }
+
+    pre{
+      margin: 12px 0 0;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(242,240,234,.10);
+      background: rgba(0,0,0,.32);
+      overflow:auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: rgba(242,240,234,.80);
+    }
+
+    footer{
+      margin-top: 18px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--faint);
+      position:relative;
+      z-index:1;
+    }
+
+    @media (max-width: 860px){
+      .card{ padding: 38px 18px 22px; }
+      .grid{ grid-template-columns: 1fr; }
+      .phi{ font-size: 116px; }
+      .mark{ height: 200px; }
+      .title{ font-size: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="vignette"></div>
+
+  <div class="wrap">
+    <main class="card" role="main" aria-label="Phase Theory landing page">
+      <header>
+        <h1 class="title">Phase Theory</h1>
+
+        <div class="mark" aria-label="Phase mark">
+          <div class="caret">^</div>
+          <div class="phi">Φ</div>
+        </div>
+
+        <p class="subtitle">
+          A minimalist, print-like presentation: deep matte black, restrained metallic foil,
+          engineered geometry. Phase (Φ) is treated as the sole primitive; structure emerges from
+          admissibility, global consistency, and coherence limits.
+        </p>
+      </header>
+
+      <div class="divider"></div>
+
+      <section class="grid" aria-label="Content">
+        <div class="block">
+          <p class="label">Repository</p>
+          <p class="copy">
+            Canonical corpus, specifications, and reference implementations for Phase Theory.
+          </p>
+
+          <div class="links" aria-label="Links">
+            <a class="btn" href="https://github.com/phase-theory/phase-theory" target="_blank" rel="noopener">
+              View on GitHub <span aria-hidden="true">↗</span>
+            </a>
+            <a class="btn secondary" href="https://github.com/phase-theory/phase-theory#readme" target="_blank" rel="noopener">
+              Readme <span aria-hidden="true">↗</span>
+            </a>
+            <a class="btn secondary" href="https://github.com/phase-theory/phase-theory/tree/main/papers" target="_blank" rel="noopener">
+              Papers <span aria-hidden="true">↗</span>
+            </a>
+            <a class="btn secondary" href="https://github.com/phase-theory/phase-theory/discussions" target="_blank" rel="noopener">
+              Discussions <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="block">
+          <p class="label">Quickstart</p>
+          <p class="copy">Minimal commands to enter the corpus.</p>
+          <pre><code>git clone https://github.com/phase-theory/phase-theory.git
+cd phase-theory
+
+# open the core documents
+open README.md</code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <span>Φ • phase-primary • consistency-first</span>
+        <span>License: MIT (edit as needed)</span>
+        <span>Contact: issues / discussions</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
