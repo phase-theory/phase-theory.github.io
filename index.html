@@ -9,422 +9,131 @@
 
   <style>
     :root{
-      --bg: #0b0f14;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.035);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --faint: rgba(255,255,255,.55);
-      --line: rgba(255,255,255,.14);
-      --glow: rgba(255,255,255,.10);
-      --accent: #d6c48a; /* restrained brass */
-      --accent2:#b9a86d;
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --radius: 18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --bg:#0b0f14;
+      --panel:rgba(255,255,255,.06);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --line:rgba(255,255,255,.14);
+      --accent:#d6c48a;
+      --radius:18px;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: var(--sans);
-      background:
-        radial-gradient(1100px 700px at 18% 18%, rgba(214,196,138,.10), transparent 60%),
-        radial-gradient(900px 600px at 75% 30%, rgba(255,255,255,.06), transparent 60%),
-        radial-gradient(700px 520px at 55% 85%, rgba(214,196,138,.08), transparent 60%),
-        linear-gradient(180deg, #070a0f, #0b0f14 40%, #06080c);
-      color: var(--text);
-      overflow-x:hidden;
+      font-family:var(--sans);
+      background:#0b0f14;
+      color:var(--text);
     }
-
-    /* subtle grid */
-    .grid{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .18;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(700px 500px at 45% 35%, black 55%, transparent 100%);
-    }
-
-    a{ color: inherit; text-decoration: none; }
-    a:hover{ text-decoration: underline; text-underline-offset: 4px; }
-
-    .wrap{
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 32px 20px 48px;
-      position: relative;
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 18px;
-      padding: 14px 0 28px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 14px;
-      min-width: 240px;
-    }
-
+    .wrap{max-width:1080px;margin:auto;padding:32px 20px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .brand{display:flex;align-items:center;gap:14px}
     .logo{
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      display:grid;
-      place-items:center;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 18px 40px rgba(0,0,0,.45), inset 0 0 0 1px rgba(214,196,138,.06);
-      position: relative;
-      overflow:hidden;
+      width:52px;height:52px;border-radius:16px;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
     }
-    .logo::before{
-      content:"";
-      position:absolute;
-      inset:-60%;
-      background: conic-gradient(from 180deg, transparent, rgba(214,196,138,.22), transparent 60%);
-      animation: spin 10s linear infinite;
-      opacity: .75;
-    }
-    .logo span{
-      position: relative;
-      font-size: 30px;
-      line-height: 1;
-      color: var(--accent);
-      text-shadow: 0 0 24px rgba(214,196,138,.25);
-      font-weight: 700;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .brand h1{
-      font-size: 16px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      margin:0;
-      color: rgba(255,255,255,.86);
-    }
-    .brand p{
-      margin: 2px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-      font-family: var(--mono);
-      letter-spacing: .02em;
-    }
-
-    nav{
-      display:flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
-    }
-    .chip{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.84);
-      font-size: 13px;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
-      white-space: nowrap;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(214,196,138,.35);
+    .logo span{font-size:30px;color:var(--accent);font-weight:700}
+    nav a{
+      margin-left:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
       text-decoration:none;
+      font-size:13px;
+      color:var(--text);
     }
-    .dot{
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(214,196,138,.35);
+    main{
+      margin-top:28px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+      background:rgba(255,255,255,.04);
     }
-
-    .hero{
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      padding: 28px;
-      position: relative;
-      overflow:hidden;
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(600px 260px at 25% 10%, rgba(214,196,138,.12), transparent 60%),
-        radial-gradient(520px 300px at 78% 40%, rgba(255,255,255,.08), transparent 62%);
-      pointer-events:none;
-    }
-
-    .hero-grid{
-      position: relative;
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .kicker{
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.72);
-      margin:0 0 10px;
-    }
-    .title{
-      font-size: 40px;
-      line-height: 1.05;
-      margin:0 0 12px;
-      letter-spacing: -0.02em;
-    }
-    .subtitle{
-      margin:0 0 18px;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--muted);
-      max-width: 62ch;
-    }
-
-    .cta-row{
-      display:flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 6px;
-    }
-
-    .btn{
-      border-radius: 12px;
-      padding: 12px 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.88);
-      font-size: 14px;
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.07);
-      border-color: rgba(214,196,138,.35);
+    h2{font-size:38px;margin:0 0 12px}
+    p{color:var(--muted);line-height:1.6}
+    .cta a{
+      display:inline-block;
+      margin-right:10px;
+      margin-top:10px;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--line);
       text-decoration:none;
-    }
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(214,196,138,.20), rgba(214,196,138,.07));
-      border-color: rgba(214,196,138,.42);
-      color: rgba(255,255,255,.92);
-    }
-    .btn.primary:hover{
-      background: linear-gradient(180deg, rgba(214,196,138,.26), rgba(214,196,138,.10));
-    }
-
-    .panel{
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 16px;
-      position: relative;
-      overflow:hidden;
-    }
-    .panel h3{
-      margin: 0 0 10px;
-      font-size: 13px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.78);
-    }
-    .panel ul{
-      margin:0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-    .panel li{ margin: 6px 0; }
-
-    .code{
-      margin-top: 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.28);
-      overflow:hidden;
-    }
-    .codebar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      font-family: var(--mono);
-      font-size: 12px;
-      color: rgba(255,255,255,.72);
+      color:var(--text);
     }
     pre{
-      margin:0;
-      padding: 14px 12px 16px;
+      margin-top:20px;
+      padding:14px;
+      background:rgba(0,0,0,.35);
+      border-radius:12px;
       overflow:auto;
-      font-family: var(--mono);
-      font-size: 12.5px;
-      line-height: 1.65;
-      color: rgba(255,255,255,.80);
+      font-family:var(--mono);
+      font-size:13px;
     }
-    code{ font-family: var(--mono); }
-
-    .footer{
-      margin-top: 18px;
+    footer{
+      margin-top:20px;
+      font-size:12px;
+      color:var(--muted);
       display:flex;
       justify-content:space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      color: var(--faint);
-      font-size: 12px;
-      font-family: var(--mono);
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-    }
-    .pill b{
-      color: rgba(255,255,255,.82);
-      font-weight: 600;
-    }
-
-    @media (max-width: 880px){
-      .hero-grid{ grid-template-columns: 1fr; }
-      .title{ font-size: 34px; }
-      nav{ justify-content:flex-start; }
-      header{ flex-direction: column; align-items:flex-start; }
+      flex-wrap:wrap;
+      gap:10px;
     }
   </style>
 </head>
 
 <body>
-  <div class="grid"></div>
-
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo" aria-label="Phase Theory logo">
-          <span>Φ</span>
-        </div>
+        <div class="logo"><span>Φ</span></div>
         <div>
-          <h1>Phase Theory</h1>
-          <p>phase as the sole primitive</p>
+          <strong>Phase Theory</strong><br/>
+          <small>phase as the sole primitive</small>
         </div>
       </div>
 
       <nav>
-        <!-- Replace the href values with your real GitHub links -->
-        <a class="chip" href="https://github.com/your-org/phase-theory" target="_blank" rel="noopener">
-          <span class="dot"></span> Repository
-        </a>
-        <a class="chip" href="https://github.com/your-org/phase-theory#readme" target="_blank" rel="noopener">
-          <span class="dot"></span> README
-        </a>
-        <a class="chip" href="https://github.com/your-org/phase-theory/tree/main/papers" target="_blank" rel="noopener">
-          <span class="dot"></span> Papers
-        </a>
-        <a class="chip" href="https://github.com/your-org/phase-theory/issues" target="_blank" rel="noopener">
-          <span class="dot"></span> Issues
-        </a>
+        <a href="https://github.com/phase-theory/phase-theory" target="_blank">Repository</a>
+        <a href="https://github.com/phase-theory/phase-theory#readme" target="_blank">README</a>
+        <a href="https://github.com/phase-theory/phase-theory/tree/main/papers" target="_blank">Papers</a>
+        <a href="https://github.com/phase-theory/phase-theory/issues" target="_blank">Issues</a>
       </nav>
     </header>
 
-    <main class="hero" role="main">
-      <div class="hero-grid">
-        <section>
-          <p class="kicker">GitHub Project</p>
-          <h2 class="title">A single-primitive framework for reality modeling.</h2>
-          <p class="subtitle">
-            Phase Theory treats <b>phase (Φ)</b> as fundamental—deriving effective behavior without committing to
-            wavefunction ontology, collapse postulates, or measurement dualism. This repository collects papers,
-            specs, and reference implementations.
-          </p>
+    <main>
+      <h2>A single-primitive framework for reality modeling.</h2>
+      <p>
+        Phase Theory treats <strong>Φ (phase)</strong> as fundamental—deriving effective
+        physical behavior without wavefunction ontology, collapse postulates,
+        or observer dualism. This repository hosts the canonical corpus,
+        specifications, and reference implementations.
+      </p>
 
-          <div class="cta-row">
-            <a class="btn primary" href="https://github.com/your-org/phase-theory" target="_blank" rel="noopener">
-              View on GitHub <span aria-hidden="true">↗</span>
-            </a>
-            <a class="btn" href="https://github.com/your-org/phase-theory/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">
-              Contributing <span aria-hidden="true">↗</span>
-            </a>
-            <a class="btn" href="#quickstart">
-              Quickstart <span aria-hidden="true">↓</span>
-            </a>
-          </div>
+      <div class="cta">
+        <a href="https://github.com/phase-theory/phase-theory" target="_blank">View on GitHub ↗</a>
+        <a href="https://github.com/phase-theory/phase-theory/blob/main/CONTRIBUTING.md" target="_blank">Contributing ↗</a>
+      </div>
 
-          <div class="code" id="quickstart" aria-label="Quickstart">
-            <div class="codebar">
-              <span>Quickstart</span>
-              <span>copy / paste</span>
-            </div>
-            <pre><code># clone
-git clone https://github.com/your-org/phase-theory.git
+      <pre><code># clone the repository
+git clone https://github.com/phase-theory/phase-theory.git
 cd phase-theory
 
 # read the docs
 open README.md
 
-# explore papers & specs
-ls papers specs</code></pre>
-          </div>
-        </section>
+# explore the corpus
+ls papers specs
+</code></pre>
 
-        <aside class="panel" aria-label="Project focus">
-          <h3>Project Focus</h3>
-          <ul>
-            <li><b>Corpus</b>: Papers, definitions, and canonical decisions.</li>
-            <li><b>Formalisms</b>: Admissibility, global consistency, coherence limits.</li>
-            <li><b>Implementations</b>: Minimal reference code & simulations.</li>
-            <li><b>Experiments</b>: Tiered test matrix for deviations vs. standard models.</li>
-          </ul>
-
-          <div style="height:12px"></div>
-
-          <h3>Suggested Structure</h3>
-          <ul>
-            <li><code>/papers</code> — theory corpus (PDF/MD)</li>
-            <li><code>/specs</code> — definitions & interfaces</li>
-            <li><code>/src</code> — implementations</li>
-            <li><code>/examples</code> — demos & notebooks</li>
-          </ul>
-        </aside>
-      </div>
-
-      <div class="footer" aria-label="Footer">
-        <span class="pill"><b>Φ</b> Phase-primary • Consistency-first • Research-oriented</span>
-        <span class="pill">License: <b>MIT</b> (edit as needed)</span>
-        <span class="pill">Contact: <b>issues / discussions</b></span>
-      </div>
+      <footer>
+        <span>Φ Phase-primary · Consistency-first</span>
+        <span>License: MIT</span>
+        <span>Contact via GitHub Issues</span>
+      </footer>
     </main>
   </div>
 </body>
